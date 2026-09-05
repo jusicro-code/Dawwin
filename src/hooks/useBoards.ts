@@ -5,7 +5,6 @@ import {
   deleteBoard,
   getBoardItems,
   saveBoardItem,
-  deleteBoardItem,
   deleteBoardItemDeep,
   getStorageInfo,
 } from "@/lib/idb";
@@ -33,6 +32,18 @@ export function useBoards() {
   const [ready, setReady] = useState(false);
   const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Use a ref to always have the latest activeBoardId in callbacks without stale closures
+  const activeBoardIdRef = useRef(activeBoardId);
+  useEffect(() => {
+    activeBoardIdRef.current = activeBoardId;
+  }, [activeBoardId]);
+
+  // Use a ref to always have latest items in callbacks
+  const itemsRef = useRef(items);
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+
   // ── Initial load ──────────────────────────────────────────────────────────
   useEffect(() => {
     (async () => {
@@ -51,7 +62,9 @@ export function useBoards() {
   // ── Load items when active board changes ──────────────────────────────────
   useEffect(() => {
     if (!ready) return;
-    getBoardItems(activeBoardId).then(setItems);
+    getBoardItems(activeBoardId).then((loaded) => {
+      setItems(loaded);
+    });
   }, [activeBoardId, ready]);
 
   // ── Refresh storage every 30s ─────────────────────────────────────────────
@@ -115,21 +128,22 @@ export function useBoards() {
       if (id === "default") return;
       await deleteBoard(id);
       setBoards((prev) => prev.filter((b) => b.id !== id));
-      if (activeBoardId === id) setActiveBoardId("default");
+      if (activeBoardIdRef.current === id) setActiveBoardId("default");
     },
-    [activeBoardId]
+    []
   );
 
   const copyBoard = useCallback(
     async (id: string) => {
-      const src = boards.find((b) => b.id === id);
+      const currentBoards = await getBoards();
+      const src = currentBoards.find((b) => b.id === id);
       if (!src) return;
       const newId = genId();
       const newBoard: Board = {
         ...src,
         id: newId,
         name: `${src.name} (نسخة)`,
-        order: boards.length,
+        order: currentBoards.length,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -151,7 +165,7 @@ export function useBoards() {
       }
       setBoards((prev) => [...prev, newBoard]);
     },
-    [boards]
+    []
   );
 
   const reorderBoards = useCallback(async (reordered: Board[]) => {
@@ -160,7 +174,7 @@ export function useBoards() {
     for (const b of updated) await saveBoard(b);
   }, []);
 
-  // ── Item CRUD ─────────────────────────────────────────────────────────────
+  // ── Item CRUD — use refs to avoid stale closures ──────────────────────────
 
   const addItem = useCallback(
     async (
@@ -169,22 +183,31 @@ export function useBoards() {
       parentId: string | null,
       extra?: Partial<BoardItem>
     ): Promise<BoardItem> => {
+      // Always read the latest activeBoardId via ref
+      const boardId = activeBoardIdRef.current;
       const item: BoardItem = {
         id: genId(),
-        boardId: activeBoardId,
+        boardId,
         parentId,
         type,
         name,
         content: "",
         ...extra,
+        // Override boardId in case extra had a different one
+        boardId: boardId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
       await saveBoardItem(item);
-      setItems((prev) => [...prev, item]);
+      // Immediately append to state — only if still on same board
+      setItems((prev) => {
+        // Prevent duplicates
+        if (prev.find((it) => it.id === item.id)) return prev;
+        return [...prev, item];
+      });
       return item;
     },
-    [activeBoardId]
+    [] // No deps needed — uses refs
   );
 
   const updateItem = useCallback(
@@ -194,26 +217,28 @@ export function useBoards() {
           it.id === id ? { ...it, ...patch, updatedAt: new Date().toISOString() } : it
         )
       );
-      const current = items.find((it) => it.id === id);
+      // Read latest from ref
+      const current = itemsRef.current.find((it) => it.id === id);
       if (current) {
         await saveBoardItem({ ...current, ...patch, updatedAt: new Date().toISOString() });
       }
     },
-    [items]
+    []
   );
 
   const removeItem = useCallback(
     async (id: string) => {
-      await deleteBoardItemDeep(id, items);
+      const currentItems = itemsRef.current;
+      await deleteBoardItemDeep(id, currentItems);
       const toDelete = new Set<string>();
       const collect = (pid: string) => {
         toDelete.add(pid);
-        items.filter((i) => i.parentId === pid).forEach((c) => collect(c.id));
+        currentItems.filter((i) => i.parentId === pid).forEach((c) => collect(c.id));
       };
       collect(id);
       setItems((prev) => prev.filter((it) => !toDelete.has(it.id)));
     },
-    [items]
+    []
   );
 
   const moveItem = useCallback(
@@ -225,16 +250,17 @@ export function useBoards() {
           it.id === id ? { ...it, ...patch, updatedAt: new Date().toISOString() } : it
         )
       );
-      const current = items.find((it) => it.id === id);
+      const current = itemsRef.current.find((it) => it.id === id);
       if (current) {
         const updated = { ...current, ...patch, updatedAt: new Date().toISOString() };
         await saveBoardItem(updated);
-        if (newBoardId && newBoardId !== activeBoardId) {
+        // If moved to another board, remove from current view
+        if (newBoardId && newBoardId !== activeBoardIdRef.current) {
           setItems((prev) => prev.filter((it) => it.id !== id));
         }
       }
     },
-    [items, activeBoardId]
+    []
   );
 
   const uploadFile = useCallback(
@@ -242,22 +268,46 @@ export function useBoards() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = async () => {
-          const item = await addItem("file", file.name, parentId, {
-            type: file.type.startsWith("image/") ? "image" : "file",
-            data: reader.result as string,
-            mimeType: file.type,
-            size: file.size,
-          });
-          const info = await getStorageInfo();
-          setStorage(info);
-          resolve(item);
+          try {
+            const boardId = activeBoardIdRef.current;
+            const itemType: BoardItemType = file.type.startsWith("image/") ? "image" : "file";
+            const item: BoardItem = {
+              id: genId(),
+              boardId,
+              parentId,
+              type: itemType,
+              name: file.name,
+              content: "",
+              data: reader.result as string,
+              mimeType: file.type,
+              size: file.size,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            };
+            await saveBoardItem(item);
+            setItems((prev) => {
+              if (prev.find((it) => it.id === item.id)) return prev;
+              return [...prev, item];
+            });
+            const info = await getStorageInfo();
+            setStorage(info);
+            resolve(item);
+          } catch (err) {
+            reject(err);
+          }
         };
         reader.onerror = () => reject(reader.error);
         reader.readAsDataURL(file);
       });
     },
-    [addItem]
+    []
   );
+
+  const refreshItems = useCallback(() => {
+    return getBoardItems(activeBoardIdRef.current).then((loaded) => {
+      setItems(loaded);
+    });
+  }, []);
 
   const activeBoard = boards.find((b) => b.id === activeBoardId) ?? boards[0];
 
@@ -280,6 +330,6 @@ export function useBoards() {
     removeItem,
     moveItem,
     uploadFile,
-    refreshItems: () => getBoardItems(activeBoardId).then(setItems),
+    refreshItems,
   };
 }

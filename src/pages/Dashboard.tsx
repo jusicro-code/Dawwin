@@ -135,7 +135,11 @@ export default function Dashboard() {
           setMainTab("active");
           setProjectsTab("active");
         }}
-        onAdd={addBoard}
+        onAdd={async (name, color, icon) => {
+          const newBoard = await addBoard(name, color, icon);
+          setActiveBoardId(newBoard.id);
+          setMainTab("files");
+        }}
         onRename={async (id, name, color, icon) => {
           await renameBoard(id, name);
           await updateBoardStyle(id, color, icon);

@@ -6,8 +6,9 @@ import {
   Trash2,
   Copy,
   HardDrive,
+  PlusCircle,
 } from "lucide-react";
-import { Board, StorageInfo } from "@/types/boards";
+import { Board, StorageInfo, BOARD_COLORS, BOARD_ICONS } from "@/types/boards";
 import { cn } from "@/lib/utils";
 import { BoardModal, ConfirmDialog } from "@/components/features/BoardModal";
 
@@ -16,7 +17,7 @@ interface BoardSelectorProps {
   activeBoardId: string;
   storage: StorageInfo;
   onSelect: (id: string) => void;
-  onAdd: (name: string, color: string, icon: string) => void;
+  onAdd: (name: string, color: string, icon: string) => Promise<Board>;
   onRename: (id: string, name: string, color: string, icon: string) => void;
   onDelete: (id: string) => void;
   onCopy: (id: string) => void;
@@ -48,6 +49,17 @@ export default function BoardSelector({
   function handleMenuClick(e: React.MouseEvent, id: string) {
     e.stopPropagation();
     setMenuOpenId((prev) => (prev === id ? null : id));
+  }
+
+  // Quick add: creates a new board with auto-generated name and switches to its files tab
+  async function handleQuickAdd() {
+    const num = boards.length;
+    const icons = ["📄", "📝", "📌", "💡", "🗂️", "📋", "🔖"];
+    const colors = BOARD_COLORS;
+    const icon = icons[num % icons.length];
+    const color = colors[num % colors.length];
+    const name = `صفحة ${num}`;
+    await onAdd(name, color, icon);
   }
 
   return (
@@ -135,14 +147,26 @@ export default function BoardSelector({
             })}
           </div>
 
-          {/* Add new board */}
-          <button
-            onClick={() => setAddOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#DFD8C5]/60 hover:text-[#DFD8C5] hover:bg-[#3D3A35] border border-transparent hover:border-[#4A4742] transition-all duration-150 flex-shrink-0 mr-1"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">مساحة جديدة</span>
-          </button>
+          {/* Quick add + full add buttons */}
+          <div className="flex items-center gap-1 flex-shrink-0 mr-1">
+            {/* Quick add (one click, auto name) */}
+            <button
+              onClick={handleQuickAdd}
+              title="فتح صفحة جديدة بضغطة واحدة"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold text-[#9FAC9D] hover:text-white hover:bg-[#9FAC9D]/30 border border-[#9FAC9D]/30 hover:border-[#9FAC9D]/60 transition-all duration-150 whitespace-nowrap"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">صفحة جديدة</span>
+            </button>
+            {/* Full add modal */}
+            <button
+              onClick={() => setAddOpen(true)}
+              title="مساحة عمل مخصصة"
+              className="flex items-center gap-1 px-2 py-1.5 rounded-xl text-xs font-semibold text-[#DFD8C5]/40 hover:text-[#DFD8C5] hover:bg-[#3D3A35] border border-transparent hover:border-[#4A4742] transition-all duration-150"
+            >
+              <Plus className="w-3.5 h-3.5" />
+            </button>
+          </div>
 
           {/* Storage indicator */}
           {storage.supported && (
