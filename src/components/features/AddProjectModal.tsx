@@ -121,7 +121,11 @@ export default function AddProjectModal({
   const advanceVal = Number(form.advancePayment) || 0;
   const finalVal = Number(form.finalPayment) || 0;
   const totalExpenses = expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
-  // Net remaining = contract - (advance + final + expenses)
+  // VAT 15%
+  const vatAmount = contractVal * 0.15;
+  // Net Profit = contract - (VAT + expenses)
+  const netProfit = contractVal - (vatAmount + totalExpenses);
+  // Remaining balance = contract - (advance + final + expenses)
   const remaining = contractVal - (advanceVal + finalVal + totalExpenses);
   const isFullyPaid = remaining <= 0 && contractVal > 0;
 
@@ -342,6 +346,22 @@ export default function AddProjectModal({
                     className={inputClass("contractValue")}
                   />
                   {errors.contractValue && <ErrorMsg msg={errors.contractValue} />}
+                  {/* VAT display */}
+                  {contractVal > 0 && (
+                    <div className="flex items-center justify-between rounded-xl px-4 py-2.5 mt-2 border bg-[#F5E8D8] border-[#D4A76A]/40">
+                      <div>
+                        <p className="text-[11px] font-semibold text-[#7A5E3A] mb-0.5">
+                          ضريبة القيمة المضافة (15%)
+                        </p>
+                        <p className="text-[10px] text-[#9A8060]">
+                          محسوبة تلقائياً · قراءة فقط
+                        </p>
+                      </div>
+                      <span className="text-base font-extrabold text-[#8A5A20]">
+                        {formatCurrency(vatAmount)}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Advance + Final */}
@@ -454,6 +474,35 @@ export default function AddProjectModal({
                     </div>
                   )}
                 </div>
+
+                {/* Net Profit = contract - (VAT + expenses) */}
+                {contractVal > 0 && (
+                  <div
+                    className={cn(
+                      "flex items-center justify-between rounded-xl px-4 py-3 border transition-all duration-300",
+                      netProfit >= 0
+                        ? "bg-[#3D7A3A]/10 border-[#5A9A57]/45"
+                        : "bg-[#C4604A]/10 border-[#C4604A]/40"
+                    )}
+                  >
+                    <div>
+                      <p className="text-[11px] font-semibold text-[#5A5447] mb-0.5">
+                        صافي الربح
+                      </p>
+                      <p className="text-[10px] text-[#9A8E80]">
+                        العقد − (الضريبة 15%{totalExpenses > 0 ? " + المصاريف" : ""})
+                      </p>
+                    </div>
+                    <span
+                      className={cn(
+                        "text-xl font-extrabold",
+                        netProfit >= 0 ? "text-[#2D5E2A]" : "text-[#C4604A]"
+                      )}
+                    >
+                      {formatCurrency(Math.max(0, netProfit))}
+                    </span>
+                  </div>
+                )}
 
                 {/* Net Remaining Balance */}
                 {contractVal > 0 && (
