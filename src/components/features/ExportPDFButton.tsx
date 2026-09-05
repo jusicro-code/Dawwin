@@ -90,11 +90,13 @@ export default function ExportPDFButton({
 
     const tableRows = (list: Project[]) =>
       list.length === 0
-        ? `<tr><td colspan="6" style="text-align:center;color:#888;padding:14px;">لا توجد مشاريع</td></tr>`
+        ? `<tr><td colspan="8" style="text-align:center;color:#888;padding:14px;">لا توجد مشاريع</td></tr>`
         : list
             .map((p, i) => {
-              const remaining =
-                p.contractValue - (p.advancePayment + p.finalPayment);
+              const totalExpenses = (p.expenses ?? []).reduce((s, e) => s + (Number(e.amount) || 0), 0);
+              const vatAmount = p.contractValue * 0.15;
+              const netProfit = p.contractValue - (vatAmount + totalExpenses);
+              const remaining = p.contractValue - (p.advancePayment + p.finalPayment + totalExpenses);
               const isFullyPaid = remaining <= 0;
               return `
         <tr style="background:${i % 2 === 0 ? "#FAFAF8" : "#FFFFFF"};">
@@ -103,8 +105,10 @@ export default function ExportPDFButton({
           <td>${p.productionType}</td>
           <td style="text-align:center;">${formatDate(p.deliveryDate)}</td>
           <td style="text-align:left;font-weight:700;color:#3D6838;">${formatCurrency(p.contractValue)}</td>
+          <td style="text-align:left;font-weight:600;color:#8A5A20;">${formatCurrency(vatAmount)}</td>
+          <td style="text-align:left;font-weight:700;color:${netProfit >= 0 ? "#2D5E2A" : "#C4604A"}">${formatCurrency(Math.max(0, netProfit))}</td>
           <td style="text-align:left;font-weight:700;color:${isFullyPaid ? "#2D5E2A" : "#C4604A"}">
-            ${isFullyPaid ? "✓ مسدد" : formatCurrency(remaining)}
+            ${isFullyPaid ? "✓ مسدد" : formatCurrency(Math.max(0, remaining))}
           </td>
         </tr>`;
             })
@@ -114,7 +118,12 @@ export default function ExportPDFButton({
       title: string,
       badgeColor: string,
       list: Project[]
-    ) => `
+    ) => {
+      const sectionVat = list.reduce((s, p) => s + p.contractValue * 0.15, 0);
+      const sectionExpenses = list.reduce((s, p) => s + (p.expenses ?? []).reduce((es, e) => es + (Number(e.amount) || 0), 0), 0);
+      const sectionContracts = list.reduce((s, p) => s + p.contractValue, 0);
+      const sectionNetProfit = sectionContracts - (sectionVat + sectionExpenses);
+      return `
   <div class="section">
     <div class="section-header">
       <h3>${title}</h3>
@@ -124,12 +133,19 @@ export default function ExportPDFButton({
       <thead>
         <tr>
           <th>اسم المشروع</th><th>العميل</th><th>نوع الإنتاج</th>
-          <th>تاريخ التسليم</th><th>قيمة العقد</th><th>المتبقي</th>
+          <th>تاريخ التسليم</th><th>قيمة العقد</th><th>ضريبة 15%</th><th>صافي الربح</th><th>المتبقي</th>
         </tr>
       </thead>
       <tbody>${tableRows(list)}</tbody>
     </table>
+    ${list.length > 0 ? `
+    <div class="section-totals">
+      <div class="total-item"><span class="total-lbl">إجمالي العقود</span><span class="total-val" style="color:#3D6838">${formatCurrency(sectionContracts)}</span></div>
+      <div class="total-item"><span class="total-lbl">إجمالي الضريبة (15%)</span><span class="total-val" style="color:#8A5A20">${formatCurrency(sectionVat)}</span></div>
+      <div class="total-item"><span class="total-lbl">صافي الربح الكلي</span><span class="total-val" style="color:${sectionNetProfit >= 0 ? '#2D5E2A' : '#C4604A'}">${formatCurrency(Math.max(0, sectionNetProfit))}</span></div>
+    </div>` : ''}
   </div>`;
+    };
 
     const completionRate =
       summary.totalProjects > 0
@@ -195,9 +211,13 @@ export default function ExportPDFButton({
     .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
     .section-header h3{font-size:14px;font-weight:700;color:#2C2A27;}
     .badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;}
-    table{width:100%;border-collapse:collapse;font-size:12px;}
-    th{background:#F0EBE3;padding:9px 10px;font-weight:700;color:#5A5447;border-bottom:2px solid #DFD8C5;}
-    td{padding:8px 10px;border-bottom:1px solid #F0EBE3;color:#3A3730;}
+    table{width:100%;border-collapse:collapse;font-size:11px;}
+    th{background:#F0EBE3;padding:8px 8px;font-weight:700;color:#5A5447;border-bottom:2px solid #DFD8C5;}
+    td{padding:7px 8px;border-bottom:1px solid #F0EBE3;color:#3A3730;}
+    .section-totals{display:flex;gap:16px;justify-content:flex-end;background:#F7F3EE;border-radius:0 0 10px 10px;padding:10px 14px;border-top:2px solid #DFD8C5;margin-top:0;}
+    .total-item{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+    .total-lbl{font-size:10px;color:#7A7060;font-weight:600;}
+    .total-val{font-size:13px;font-weight:800;}
     .footer{background:#2C2A27;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;}
     .footer p{font-size:11px;color:rgba(255,255,255,.5);}
     @media print{body{padding:0;background:#fff;}.page{border-radius:0;box-shadow:none;}}
