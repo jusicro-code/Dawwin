@@ -7,13 +7,17 @@ import {
   SlidersHorizontal,
   Archive,
   Loader2,
+  FolderOpen,
 } from "lucide-react";
 import { useProjects } from "@/hooks/useProjects";
+import { useBoards } from "@/hooks/useBoards";
 import Header from "@/components/layout/Header";
 import StatsCards from "@/components/features/StatsCards";
 import ProjectCard from "@/components/features/ProjectCard";
 import AddProjectModal from "@/components/features/AddProjectModal";
 import ExportPDFButton from "@/components/features/ExportPDFButton";
+import BoardSelector from "@/components/features/BoardSelector";
+import BoardFilesTab from "@/components/features/BoardFilesTab";
 import { Project } from "@/types";
 import {
   STATUS_LABELS,
@@ -26,6 +30,7 @@ import {
 import { formatCurrency, formatDate, getRemainingDays, cn } from "@/lib/utils";
 
 type ViewMode = "grid" | "list";
+type MainTab = "active" | "archive" | "files";
 
 export default function Dashboard() {
   const {
@@ -33,13 +38,32 @@ export default function Dashboard() {
     filteredActiveProjects,
     archivedProjects,
     financialSummary,
-    activeTab,
-    setActiveTab,
+    activeTab: projectsTab,
+    setActiveTab: setProjectsTab,
     addProject,
     updateProject,
     deleteProject,
     loadingProjects,
   } = useProjects();
+
+  const {
+    boards,
+    activeBoardId,
+    activeBoard,
+    setActiveBoardId,
+    items: boardItems,
+    storage,
+    addBoard,
+    renameBoard,
+    updateBoardStyle,
+    removeBoard,
+    copyBoard,
+    addItem,
+    updateItem,
+    removeItem,
+    moveItem,
+    uploadFile,
+  } = useBoards();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editProject, setEditProject] = useState<Project | null>(null);
@@ -47,6 +71,14 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
+  const [mainTab, setMainTab] = useState<MainTab>("active");
+
+  // Sync mainTab ↔ projectsTab
+  function handleTabChange(tab: MainTab) {
+    setMainTab(tab);
+    if (tab === "active") setProjectsTab("active");
+    else if (tab === "archive") setProjectsTab("archive");
+  }
 
   function handleEdit(project: Project) {
     setEditProject(project);
@@ -66,7 +98,8 @@ export default function Dashboard() {
     }
   }
 
-  const isArchiveTab = activeTab === "archive";
+  const isArchiveTab = mainTab === "archive";
+  const isFilesTab = mainTab === "files";
 
   const baseProjects = isArchiveTab ? archivedProjects : filteredActiveProjects;
 
@@ -91,6 +124,25 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#DFD8C5]">
       <Header />
+      {/* ── Board selector bar ── */}
+      <BoardSelector
+        boards={boards}
+        activeBoardId={activeBoardId}
+        storage={storage}
+        onSelect={(id) => {
+          setActiveBoardId(id);
+          // when switching boards, reset to active tab
+          setMainTab("active");
+          setProjectsTab("active");
+        }}
+        onAdd={addBoard}
+        onRename={async (id, name, color, icon) => {
+          await renameBoard(id, name);
+          await updateBoardStyle(id, color, icon);
+        }}
+        onDelete={removeBoard}
+        onCopy={copyBoard}
+      />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 bg-[#ECE4D7] rounded-t-none min-h-[calc(100vh-73px)]">
         {/* Stats */}
@@ -98,14 +150,14 @@ export default function Dashboard() {
 
         {/* Tabs + Action Buttons */}
         <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
-          {/* Two tabs: Active Projects & Archive */}
+          {/* Three tabs */}
           <div className="flex bg-[#2C2A27] rounded-2xl p-1.5 gap-1 border border-[#3D3A35]">
             {/* Active tab */}
             <button
-              onClick={() => setActiveTab("active")}
+              onClick={() => handleTabChange("active")}
               className={cn(
                 "flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap",
-                activeTab === "active"
+                mainTab === "active"
                   ? "bg-[#9FAC9D] text-white shadow-sm"
                   : "text-[#DFD8C5]/70 hover:bg-[#3D3A35] hover:text-white"
               )}
@@ -116,7 +168,7 @@ export default function Dashboard() {
                 <span
                   className={cn(
                     "text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center",
-                    activeTab === "active"
+                    mainTab === "active"
                       ? "bg-white/25 text-white"
                       : "bg-[#5A5447] text-[#DFD8C5]/80"
                   )}
@@ -128,10 +180,10 @@ export default function Dashboard() {
 
             {/* Archive tab */}
             <button
-              onClick={() => setActiveTab("archive")}
+              onClick={() => handleTabChange("archive")}
               className={cn(
                 "flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap",
-                activeTab === "archive"
+                mainTab === "archive"
                   ? "bg-[#5A9A57] text-white shadow-sm"
                   : "text-[#DFD8C5]/70 hover:bg-[#3D3A35] hover:text-white"
               )}
@@ -142,7 +194,7 @@ export default function Dashboard() {
                 <span
                   className={cn(
                     "text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center",
-                    activeTab === "archive"
+                    mainTab === "archive"
                       ? "bg-white/25 text-white"
                       : "bg-[#5A5447] text-[#DFD8C5]/80"
                   )}
@@ -151,12 +203,43 @@ export default function Dashboard() {
                 </span>
               )}
             </button>
+
+            {/* Files tab */}
+            <button
+              onClick={() => handleTabChange("files")}
+              className={cn(
+                "flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap",
+                mainTab === "files"
+                  ? "text-white shadow-sm"
+                  : "text-[#DFD8C5]/70 hover:bg-[#3D3A35] hover:text-white"
+              )}
+              style={
+                mainTab === "files"
+                  ? { backgroundColor: (activeBoard?.color ?? "#9FAC9D") + "90" }
+                  : {}
+              }
+            >
+              <FolderOpen className="w-4 h-4" />
+              <span>ملفات المساحة</span>
+              {boardItems.filter((it) => it.boardId === activeBoardId).length > 0 && (
+                <span
+                  className={cn(
+                    "text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center",
+                    mainTab === "files"
+                      ? "bg-white/25 text-white"
+                      : "bg-[#5A5447] text-[#DFD8C5]/80"
+                  )}
+                >
+                  {boardItems.filter((it) => it.boardId === activeBoardId).length}
+                </span>
+              )}
+            </button>
           </div>
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
-            <ExportPDFButton projects={projects} summary={financialSummary} />
-            {!isArchiveTab && (
+            {!isFilesTab && <ExportPDFButton projects={projects} summary={financialSummary} />}
+            {!isArchiveTab && !isFilesTab && (
               <button
                 onClick={handleAdd}
                 className="flex items-center gap-2 px-5 py-2.5 bg-[#9FAC9D] hover:bg-[#7D9A7B] text-white font-bold rounded-xl text-sm transition-all duration-150 shadow-md"
@@ -168,8 +251,24 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* ── Files Tab ── */}
+        {isFilesTab && (
+          <BoardFilesTab
+            items={boardItems}
+            boards={boards}
+            activeBoardId={activeBoardId}
+            onAddItem={addItem}
+            onUpdateItem={updateItem}
+            onRemoveItem={removeItem}
+            onMoveItem={async (id, newParent, newBoard) => {
+              await moveItem(id, newParent, newBoard);
+            }}
+            onUploadFile={uploadFile}
+          />
+        )}
+
         {/* Category Legend (active tab only) */}
-        {!isArchiveTab && (
+        {!isArchiveTab && !isFilesTab && (
           <div className="flex items-center gap-3 flex-wrap mb-5">
             <span className="text-xs font-semibold text-[#7A7060]">الأقسام:</span>
             {(["personal", "corporate", "major"] as const).map((cat) => {
@@ -206,7 +305,7 @@ export default function Dashboard() {
         )}
 
         {/* Archive Header */}
-        {isArchiveTab && (
+        {isArchiveTab && !isFilesTab && (
           <div className="flex items-center gap-3 bg-[#3D7A3A]/10 border border-[#5A9A57]/30 rounded-xl px-4 py-3 mb-5">
             <Archive className="w-5 h-5 text-[#5A9A57]" />
             <div>
@@ -220,8 +319,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Toolbar */}
-        <div className="flex items-center gap-3 mb-6 flex-wrap">
+        {/* Toolbar (projects only) */}
+        {!isFilesTab && <div className="flex items-center gap-3 mb-6 flex-wrap">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9FAC9D]" />
             <input
@@ -270,10 +369,10 @@ export default function Dashboard() {
               <List className="w-3.5 h-3.5" />
             </button>
           </div>
-        </div>
+        </div>}
 
-        {/* Expanded Filters */}
-        {showFilters && (
+        {/* Expanded Filters (projects only) */}
+        {!isFilesTab && showFilters && (
           <div className="bg-white rounded-2xl border border-[#DFD8C5] p-4 mb-5 flex flex-wrap gap-4 items-center shadow-sm">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-semibold text-[#5A5447]">
@@ -308,8 +407,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Count */}
-        {displayedProjects.length > 0 && (
+        {/* Count (projects only) */}
+        {!isFilesTab && displayedProjects.length > 0 && (
           <div className="flex items-center gap-2 mb-4">
             <span className="text-sm text-[#7A7060]">
               يُعرض{" "}
@@ -326,8 +425,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Loading */}
-        {loadingProjects ? (
+        {/* Projects content (hidden when files tab active) */}
+        {!isFilesTab && (loadingProjects ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-8 h-8 text-[#9FAC9D] animate-spin mb-3" />
             <p className="text-sm text-[#9A8E80]">جارٍ تحميل مشاريعك...</p>
@@ -368,7 +467,7 @@ export default function Dashboard() {
             onEdit={handleEdit}
             onDelete={deleteProject}
           />
-        )}
+        ))}
       </main>
 
       {/* Modal */}
