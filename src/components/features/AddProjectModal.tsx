@@ -123,8 +123,10 @@ export default function AddProjectModal({
   const totalExpenses = expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
   // VAT 15%
   const vatAmount = contractVal * 0.15;
-  // Net Profit = contract - (VAT + expenses)
-  const netProfit = contractVal - (vatAmount + totalExpenses);
+  // Total after VAT = contract + VAT
+  const totalWithVat = contractVal + vatAmount;
+  // Net Total = contract - expenses only (VAT excluded)
+  const netProfit = contractVal - totalExpenses;
   // Remaining balance = contract - (advance + final + expenses)
   const remaining = contractVal - (advanceVal + finalVal + totalExpenses);
   const isFullyPaid = remaining <= 0 && contractVal > 0;
@@ -346,20 +348,37 @@ export default function AddProjectModal({
                     className={inputClass("contractValue")}
                   />
                   {errors.contractValue && <ErrorMsg msg={errors.contractValue} />}
-                  {/* VAT display */}
+                  {/* VAT + Total with VAT display */}
                   {contractVal > 0 && (
-                    <div className="flex items-center justify-between rounded-xl px-4 py-2.5 mt-2 border bg-[#F5E8D8] border-[#D4A76A]/40">
-                      <div>
-                        <p className="text-[11px] font-semibold text-[#7A5E3A] mb-0.5">
-                          ضريبة القيمة المضافة (15%)
-                        </p>
-                        <p className="text-[10px] text-[#9A8060]">
-                          محسوبة تلقائياً · قراءة فقط
-                        </p>
+                    <div className="space-y-2 mt-2">
+                      {/* VAT amount */}
+                      <div className="flex items-center justify-between rounded-xl px-4 py-2.5 border bg-[#F5E8D8] border-[#D4A76A]/40">
+                        <div>
+                          <p className="text-[11px] font-semibold text-[#7A5E3A] mb-0.5">
+                            مبلغ الضريبة (15%)
+                          </p>
+                          <p className="text-[10px] text-[#9A8060]">
+                            إجمالي العقد × 0.15
+                          </p>
+                        </div>
+                        <span className="text-base font-extrabold text-[#8A5A20]">
+                          {formatCurrency(vatAmount)}
+                        </span>
                       </div>
-                      <span className="text-base font-extrabold text-[#8A5A20]">
-                        {formatCurrency(vatAmount)}
-                      </span>
+                      {/* Total after VAT */}
+                      <div className="flex items-center justify-between rounded-xl px-4 py-2.5 border bg-[#E8F0E8] border-[#5A9A57]/40">
+                        <div>
+                          <p className="text-[11px] font-semibold text-[#2D5E2A] mb-0.5">
+                            القيمة الإجمالية بعد الضريبة
+                          </p>
+                          <p className="text-[10px] text-[#6A8E6A]">
+                            إجمالي العقد + مبلغ الضريبة
+                          </p>
+                        </div>
+                        <span className="text-base font-extrabold text-[#2D5E2A]">
+                          {formatCurrency(totalWithVat)}
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -475,7 +494,7 @@ export default function AddProjectModal({
                   )}
                 </div>
 
-                {/* Net Profit = contract - (VAT + expenses) */}
+                {/* Net Total = contract - expenses (VAT excluded) */}
                 {contractVal > 0 && (
                   <div
                     className={cn(
@@ -487,10 +506,12 @@ export default function AddProjectModal({
                   >
                     <div>
                       <p className="text-[11px] font-semibold text-[#5A5447] mb-0.5">
-                        صافي الربح
+                        إجمالي الصافي
                       </p>
                       <p className="text-[10px] text-[#9A8E80]">
-                        العقد − (الضريبة 15%{totalExpenses > 0 ? " + المصاريف" : ""})
+                        {totalExpenses > 0
+                          ? "إجمالي العقد − إجمالي المصاريف"
+                          : "إجمالي العقد (بدون مصاريف)"}
                       </p>
                     </div>
                     <span
