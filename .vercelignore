@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+node_modules
+.next
+legacy
+test-results
+playwright-report
+*.pem
+*.key
