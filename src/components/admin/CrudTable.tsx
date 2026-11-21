@@ -70,7 +70,7 @@ export function CrudTable({ table, rows, fields, pk = 'id', title, canDelete = t
   };
 
   const editor = (
-    <div className="card space-y-3 border-brand/40" data-testid={`crud-editor-${table}`}>
+    <div className="card space-y-3 border-brand" data-testid={`crud-editor-${table}`}>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {fields.map((f) => (
           <label key={f.key} className={f.type === 'textarea' ? 'sm:col-span-2 lg:col-span-3' : ''}>

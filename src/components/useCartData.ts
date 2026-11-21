@@ -9,7 +9,7 @@ export function useCartProducts(lines: CartLine[]) {
   const ids = Array.from(new Set(lines.map((l) => l.productId))).sort().join(',');
   useEffect(() => {
     if (!ids) { setProducts({}); return; }
-    createClient().from('products').select('*, product_images(*)').in('id', ids.split(',')).then(({ data }) => {
+    createClient().from('products').select('*, product_images(*)').in('id', ids.split(',')).then(({ data }: { data: Product[] | null }) => {
       const m: Record<string, Product> = {};
       (data || []).forEach((p: Product) => { p.product_images?.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)); m[p.id] = p; });
       setProducts(m);

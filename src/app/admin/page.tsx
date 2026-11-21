@@ -41,7 +41,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
             <div className="flex h-48 items-end gap-1.5" role="img" aria-label="sales chart">
               {series.map((x) => (
                 <div key={x.day} className="group relative flex-1">
-                  <div className="rounded-t bg-brand/80 group-hover:bg-brand" style={{ height: `${Math.max(4, (Number(x.sales) / max) * 180)}px` }} />
+                  <div className="rounded-t bg-brand opacity-80 group-hover:opacity-100" style={{ height: `${Math.max(4, (Number(x.sales) / max) * 180)}px` }} />
                   <div className="pointer-events-none absolute bottom-full start-1/2 mb-1 hidden -translate-x-1/2 whitespace-nowrap rounded bg-ink px-2 py-1 text-[11px] text-white group-hover:block">{x.day}: {money(x.sales, locale)} · {x.orders}</div>
                 </div>
               ))}
