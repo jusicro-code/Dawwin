@@ -24,8 +24,8 @@ export function CartView() {
   return (
     <div className="mx-auto max-w-page px-4 py-10">
       <h1 className="text-2xl font-bold md:text-3xl">{t.cart_title}</h1>
-      <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_360px]">
-        <ul className="space-y-4" data-testid="cart-lines">
+      <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <ul className="min-w-0 space-y-4" data-testid="cart-lines">
           {cart.lines.map((l) => {
             const p = products[l.productId];
             const name = p ? (locale === 'ar' ? p.name_ar : p.name_en) : '…';

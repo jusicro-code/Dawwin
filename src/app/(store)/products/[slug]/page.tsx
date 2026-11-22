@@ -48,9 +48,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="mx-auto max-w-page px-4 py-8">
-      <div className="grid gap-10 lg:grid-cols-2">
-        <Gallery media={p.product_images || []} name={name} demoLabel={t.demo_image} videoLabel={t.video} />
-        <div>
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+        <div className="min-w-0"><Gallery media={p.product_images || []} name={name} demoLabel={t.demo_image} videoLabel={t.video} /></div>
+        <div className="min-w-0">
           <p className="text-sm text-brand">{locale === 'ar' ? p.categories?.name_ar : p.categories?.name_en}</p>
           <div className="mt-1 flex items-start justify-between gap-4">
             <h1 className="text-2xl font-bold md:text-3xl" data-testid="product-name">{name}</h1>

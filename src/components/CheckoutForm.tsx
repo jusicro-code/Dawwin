@@ -100,8 +100,8 @@ export function CheckoutForm(props: {
   return (
     <form onSubmit={submit} className="mx-auto max-w-page px-4 py-10" data-testid="checkout-form">
       <h1 className="text-2xl font-bold md:text-3xl">{t.checkout}</h1>
-      <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_380px]">
-        <div className="space-y-6">
+      <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="min-w-0 space-y-6">
           <section className="card space-y-4">
             <h2 className="font-semibold">{t.contact_section}</h2>
             <div className="grid gap-4 sm:grid-cols-3">
@@ -196,7 +196,7 @@ export function CheckoutForm(props: {
           </section>
         </div>
 
-        <aside className="h-fit space-y-4 lg:sticky lg:top-24">
+        <aside className="h-fit min-w-0 space-y-4 lg:sticky lg:top-24">
           <div className="card space-y-4">
             <div className="font-semibold">{t.cost_breakdown}</div>
             <div className="flex gap-2">
