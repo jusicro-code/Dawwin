@@ -1,61 +1,49 @@
-# Welcome to your OnSpace project
+# Mawashi Plus — Saudi livestock store
 
-## How can I edit this code?
+Next.js 15 (App Router, TypeScript, Tailwind) + Supabase (Postgres, Auth, Storage, RLS).
+Arabic (RTL) by default with full English. Home delivery only.
 
-There are several ways of editing your application.
+- **Live:** https://mawashi-plus-store.vercel.app — admin: https://mawashi-plus-store.vercel.app/admin
+- **Vercel project:** `mawashi-plus-store` · **Supabase project:** `saudi-livestock-store` (ref `rscnzcalnnzmgzpsppud`)
 
-**Use OnSpace**
+## Admin access
+Register on the store with the owner email configured in `private.config` (`owner_email`). Once the
+email is verified, the account is granted the `owner` role automatically. Owners grant `admin`/`staff`
+to other registered users from **/admin/staff**. `/admin` requires login and a role; customers get 403.
 
-Simply visit the [OnSpace Project]() and start prompting.
+## Architecture
+- All prices, discounts, VAT, delivery fees and stock are computed and enforced **in Postgres**
+  (`private.compute_pricing`, `public.place_order`) — the browser total is only a preview.
+- Atomic stock: product rows are locked `FOR UPDATE`; individually identified animals are reserved per order.
+- Orders are idempotent (`idempotency_key`), rate limited, and every status change is logged.
+- Payments are only marked paid by `svc_confirm_payment`, called server-side after re-fetching the
+  payment from the provider API (never from a browser redirect). Webhook events are de-duplicated.
+- Invoices/credit notes are numbered sequentially; a ZATCA Phase-1 TLV QR is generated when the store
+  has a VAT number. ZATCA Phase-2 (Fatoora API) is **not** integrated yet.
 
-Changes made via OnSpace will be committed automatically to this repo.
+## Environment variables
+See `.env.example`. Public: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`.
+Server-only secrets are set in Vercel → Project → Settings → Environment Variables (type *Sensitive*).
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in OnSpace.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+`INTERNAL_RPC_SECRET` (needed for online payments / webhooks / notification dispatch):
+```bash
+openssl rand -hex 32
+```
+Put the value in Vercel, then store its SHA-256 in Supabase (SQL editor):
+```sql
+insert into private.config(key, value)
+values ('server_secret_sha256', encode(extensions.digest('PASTE_SECRET_HERE', 'sha256'), 'hex'))
+on conflict (key) do update set value = excluded.value;
 ```
 
-**Edit a file directly in GitHub**
+## Deploy
+Production deploys are created from GitHub with the Vercel project above. After connecting GitHub
+in Vercel (Account → Authentication → GitHub) and linking the repo, every push to the production
+branch deploys automatically.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [OnSpace]() and click on Share -> Publish.
+## Local development
+```bash
+npm install
+cp .env.example .env.local   # fill in values
+npm run dev
+```

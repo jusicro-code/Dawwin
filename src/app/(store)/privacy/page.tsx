@@ -1,0 +1,6 @@
+import { ContentPage } from '@/components/ContentPage';
+export default function Page() {
+  return <ContentPage
+    ar={{ title: 'سياسة الخصوصية', body: <><h2>البيانات التي نجمعها</h2><p>الاسم، رقم الجوال، البريد الإلكتروني، عناوين التوصيل، وتفاصيل الطلبات.</p><h2>استخدام البيانات</h2><p>نستخدم بياناتك لتنفيذ الطلبات والتوصيل وإصدار الفواتير والتواصل بخصوص طلبك.</p><h2>الدفع</h2><p>لا نخزّن بيانات البطاقات. تتم معالجة المدفوعات الإلكترونية عبر مزودي دفع مرخّصين.</p><h2>الحماية</h2><p>بياناتك محمية بصلاحيات وصول تمنع أي عميل من الاطلاع على بيانات غيره.</p><h2>حقوقك</h2><p>يمكنك تعديل بياناتك من حسابك أو طلب حذفها بالتواصل معنا.</p></> }}
+    en={{ title: 'Privacy policy', body: <><h2>Data we collect</h2><p>Name, mobile number, email, delivery addresses and order details.</p><h2>How we use it</h2><p>To fulfil and deliver orders, issue invoices and contact you about your order.</p><h2>Payments</h2><p>We never store card details. Online payments are processed by licensed payment providers.</p><h2>Protection</h2><p>Access controls ensure customers can only see their own data.</p><h2>Your rights</h2><p>You can edit your data in your account or request deletion by contacting us.</p></> }} />;
+}
