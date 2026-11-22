@@ -4,7 +4,7 @@ import { getRoles, getSettings, getUser } from '@/lib/data';
 import { getT } from '@/lib/i18n/server';
 import { LangSwitch } from '@/components/LangSwitch';
 import { Logo } from '@/components/Logo';
-import { BarChart3, ClipboardList, Package, Users, Tag, Truck, Settings, Receipt, ShieldCheck, Bell, LayoutDashboard } from '@/components/icons';
+import { BarChart3, ClipboardList, Package, Users, Tag, Truck, Settings, Receipt, ShieldCheck, Bell, LayoutDashboard, Star, Mail } from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { robots: { index: false, follow: false } };
@@ -23,7 +23,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     ['/admin/products', L('المنتجات والمخزون', 'Products & stock'), Package, true], ['/admin/customers', L('العملاء', 'Customers'), Users, true],
     ['/admin/promotions', L('العروض والخصومات', 'Promotions'), Tag, isAdmin], ['/admin/delivery', L('التوصيل', 'Delivery'), Truck, true],
     ['/admin/services', L('خدمات الذبح والتجهيز', 'Preparation services'), ClipboardList, isAdmin], ['/admin/finance', L('التقارير المالية', 'Finance'), BarChart3, isAdmin],
-    ['/admin/invoices', L('الفواتير', 'Invoices'), Receipt, true], ['/admin/notifications', L('الإشعارات', 'Notifications'), Bell, true],
+    ['/admin/invoices', L('الفواتير', 'Invoices'), Receipt, true], ['/admin/reviews', L('التقييمات', 'Reviews'), Star, true], ['/admin/support', L('الشكاوى والدعم', 'Support & complaints'), Mail, true], ['/admin/notifications', L('الإشعارات', 'Notifications'), Bell, true],
     ['/admin/staff', L('المستخدمون والصلاحيات', 'Staff & roles'), ShieldCheck, isAdmin], ['/admin/settings', L('الإعدادات', 'Settings'), Settings, isAdmin],
   ] as const;
   return (
@@ -31,7 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="sticky top-0 z-30 border-b border-sand-200 bg-white">
         <div className="flex h-14 items-center gap-3 px-4">
           <Logo settings={s} locale={locale} href="/admin" />
-          <span className="badge bg-ink text-white">{L('لوحة التحكم', 'Dashboard')}</span>
+          <span className="badge bg-brand text-gold">{L('لوحة التحكم', 'Dashboard')}</span>
           <div className="ms-auto flex items-center gap-2 text-sm">
             <span className="hidden text-ink/60 sm:inline">{user.email} · {roles.join(', ')}</span>
             <LangSwitch />

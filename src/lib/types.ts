@@ -1,7 +1,7 @@
 import type { Media } from './media';
 export type Settings = {
   store_name_ar: string; store_name_en: string; is_name_temporary: boolean; logo_url: string | null;
-  brand_colors: { primary?: string; accent?: string }; whatsapp_number: string; contact_phone: string | null; contact_email: string | null;
+  brand_colors: { primary?: string; secondary?: string; accent?: string }; whatsapp_number: string; contact_phone: string | null; contact_email: string | null;
   address_ar: string | null; address_en: string | null; instagram_url: string | null; tiktok_url: string | null;
   legal_name_ar: string | null; legal_name_en: string | null; commercial_registration_no: string | null; vat_registration_no: string | null;
   vat_enabled: boolean; vat_rate: number | null; prices_include_vat: boolean; vat_exempt: boolean; vat_exemption_reason: string | null;
@@ -9,7 +9,7 @@ export type Settings = {
   tabby_merchant_approved: boolean; tamara_merchant_approved: boolean; unpaid_order_expiry_minutes: number; max_animals_per_order: number;
   whatsapp_notifications_enabled: boolean; email_notifications_enabled: boolean; admin_notification_phone: string | null; licenses: unknown;
 };
-export type Category = { id: string; slug: string; name_ar: string; name_en: string; description_ar: string | null; description_en: string | null; sort_order: number; is_active: boolean };
+export type Category = { id: string; slug: string; image_path?: string | null; image_credit?: string | null; name_ar: string; name_en: string; description_ar: string | null; description_en: string | null; sort_order: number; is_active: boolean };
 export type Product = {
   id: string; category_id: string; slug: string; name_ar: string; name_en: string; description_ar: string | null; description_en: string | null;
   price: number; compare_at_price: number | null; wholesale_price: number | null; inventory_mode: 'quantity' | 'individual';

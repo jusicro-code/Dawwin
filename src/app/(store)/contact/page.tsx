@@ -3,6 +3,7 @@ import { getT } from '@/lib/i18n/server';
 import { waLink } from '@/lib/format';
 import { WhatsAppIcon } from '@/components/WhatsAppIcon';
 import { Mail, Phone, MapPin, Instagram } from '@/components/icons';
+import { SupportForm } from '@/components/SupportForm';
 export default async function Contact() {
   const [{ locale, t }, s] = await Promise.all([getT(), getSettings()]);
   return (
@@ -20,6 +21,11 @@ export default async function Contact() {
         {s.instagram_url && <a href={s.instagram_url} target="_blank" rel="noopener noreferrer" className="card flex items-center gap-3 hover:border-brand"><Instagram className="h-7 w-7 text-brand" /><div className="font-semibold">Instagram</div></a>}
         {s.tiktok_url && <a href={s.tiktok_url} target="_blank" rel="noopener noreferrer" className="card flex items-center gap-3 hover:border-brand"><span className="text-lg font-bold">TikTok</span></a>}
       </div>
+      <section id="support" className="mt-12 scroll-mt-24">
+        <h2 className="text-2xl font-bold">{t.support_title}</h2>
+        <p className="mb-4 mt-1 text-sm text-ink/60">{t.support_hint}</p>
+        <SupportForm />
+      </section>
     </div>
   );
 }

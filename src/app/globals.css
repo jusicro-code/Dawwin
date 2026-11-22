@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { --brand: #7a4b2a; --brand-dark: #5c3820; --brand-soft: #f3e9df; --accent: #b08d57; }
+:root { --brand: #073F2E; --brand-dark: #052A1F; --brand-2: #0D5940; --brand-soft: #E7EFE9; --accent: #D5A84A; }
 html { -webkit-text-size-adjust: 100%; }
 body { @apply bg-sand-50 text-ink antialiased; font-feature-settings: "kern"; }
 h1, h2, h3 { @apply tracking-tight; }
@@ -12,6 +12,7 @@ h1, h2, h3 { @apply tracking-tight; }
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50; }
   .btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
   .btn-outline { @apply btn border border-sand-300 bg-white text-ink hover:border-brand hover:text-brand; }
+  .btn-gold { @apply btn bg-gold text-brand-dark hover:brightness-95; }
   .btn-ghost { @apply btn text-ink/80 hover:bg-sand-100; }
   .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
   .input { @apply w-full rounded-xl border border-sand-300 bg-white px-3.5 py-2.5 text-[15px] text-ink placeholder:text-ink/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-sand-200; }

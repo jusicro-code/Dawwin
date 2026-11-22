@@ -6,6 +6,7 @@ import { useT } from '@/lib/i18n/client';
 import { errorText } from '@/lib/errors';
 import { mediaUrl, type Media } from '@/lib/media';
 import { Trash2, Upload } from '../icons';
+import { optimizeImage } from '@/lib/compress';
 
 type P = Record<string, unknown> & { id: string; inventory_mode: string; stock_quantity: number };
 type Animal = { id: string; tag_code: string; status: string; specifications: Record<string, unknown>; notes: string | null; reserved_order_id: string | null };
@@ -55,7 +56,8 @@ export function ProductEditor({ product, categories, media, animals, cost }: { p
   async function upload(files: FileList | null) {
     if (!files || !product) return;
     setBusy(true); setMsg(null);
-    for (const f of Array.from(files)) {
+    for (const raw of Array.from(files)) {
+      const f = VIDEO_TYPES.includes(raw.type) ? raw : await optimizeImage(raw);
       const isVideo = VIDEO_TYPES.includes(f.type);
       if (!IMAGE_TYPES.includes(f.type) && !isVideo) { setMsg({ ok: false, text: L('نوع الملف غير مدعوم', 'Unsupported file type') }); continue; }
       if (f.size > (isVideo ? MAX_VIDEO : MAX_IMAGE)) { setMsg({ ok: false, text: L('حجم الملف كبير', 'File too large') }); continue; }

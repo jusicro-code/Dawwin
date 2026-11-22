@@ -5,6 +5,7 @@ import { money } from '@/lib/format';
 import { mediaUrl } from '@/lib/media';
 import { stockStatus } from '@/lib/types';
 import { CrudTable } from '@/components/admin/CrudTable';
+import { CategoryImages } from '@/components/admin/CategoryImages';
 
 export default async function AdminProducts() {
   const { locale, L: tr } = await L();
@@ -44,6 +45,7 @@ export default async function AdminProducts() {
         { key: 'description_ar', ar: 'الوصف عربي', en: 'Description AR', list: false }, { key: 'description_en', ar: 'الوصف إنجليزي', en: 'Description EN', list: false },
         { key: 'sort_order', ar: 'الترتيب', en: 'Order', type: 'number' }, { key: 'is_active', ar: 'مفعل', en: 'Active', type: 'bool' },
       ]} defaults={{ is_active: true, sort_order: 10 }} />
+      <CategoryImages categories={(cats || []).map((c) => ({ id: c.id, name: locale === 'ar' ? c.name_ar : c.name_en, image_path: c.image_path, image_credit: c.image_credit }))} />
     </div>
   );
 }

@@ -16,9 +16,10 @@ export async function Header() {
     { href: '/track', label: t.nav_track }, { href: '/about', label: t.nav_about }, { href: '/contact', label: t.nav_contact },
   ];
   return (
-    <header className="sticky top-0 z-30 border-b border-sand-200/80 bg-sand-50/90 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-sand-200/80 bg-sand-50/95 backdrop-blur">
+      <div className="h-1 bg-gradient-to-l from-gold via-gold/70 to-brand" />
       <div className="relative mx-auto flex h-16 max-w-page items-center gap-3 px-4">
-        <MobileMenu links={links} />
+        <MobileMenu links={links} logo={s.logo_url || '/brand/logo-160.png'} name={locale === 'ar' ? s.store_name_ar : s.store_name_en} />
         <Logo settings={s} locale={locale} />
         <nav className="ms-6 hidden items-center gap-1 lg:flex">
           {links.map((l) => <Link key={l.href} href={l.href} className="rounded-full px-3 py-1.5 text-sm text-ink/80 hover:bg-sand-100 hover:text-ink">{l.label}</Link>)}

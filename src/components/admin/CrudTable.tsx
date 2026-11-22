@@ -8,7 +8,7 @@ import { errorText } from '@/lib/errors';
 export type Field = {
   key: string; ar: string; en: string;
   type?: 'text' | 'number' | 'bool' | 'select' | 'datetime' | 'date' | 'time' | 'textarea' | 'array';
-  options?: { value: string; ar: string; en: string }[]; required?: boolean; list?: boolean; nullable?: boolean; dir?: 'ltr';
+  options?: { value: string; ar: string; en: string }[]; required?: boolean; list?: boolean; nullable?: boolean; dir?: 'ltr'; readOnly?: boolean;
   help?: { ar: string; en: string };
 };
 type Row = Record<string, unknown>;
@@ -41,6 +41,7 @@ export function CrudTable({ table, rows, fields, pk = 'id', title, canDelete = t
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const L = (o: { ar: string; en: string }) => (locale === 'ar' ? o.ar : o.en);
+  const editingRow = rows.find((r) => String(r[pk]) === editing);
 
   function open(row: Row | null) {
     setErr(null);
@@ -49,7 +50,7 @@ export function CrudTable({ table, rows, fields, pk = 'id', title, canDelete = t
   }
   async function save() {
     setBusy(true); setErr(null);
-    const payload: Row = Object.fromEntries(fields.map((f) => [f.key, fromInput(f, form[f.key])]));
+    const payload: Row = Object.fromEntries(fields.filter((f) => !f.readOnly).map((f) => [f.key, fromInput(f, form[f.key])]));
     const sb = createClient();
     const { error } = editing === 'new' ? await sb.from(table).insert({ ...defaults, ...payload }) : await sb.from(table).update(payload).eq(pk, editing!);
     setBusy(false);
@@ -72,7 +73,9 @@ export function CrudTable({ table, rows, fields, pk = 'id', title, canDelete = t
   const editor = (
     <div className="card space-y-3 border-brand" data-testid={`crud-editor-${table}`}>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {fields.map((f) => (
+        {fields.map((f) => f.readOnly ? (
+          <div key={f.key}><span className="label">{L(f)}</span><div className="rounded-xl bg-sand-100 px-3.5 py-2.5 text-sm">{show(f, editingRow?.[f.key])}</div></div>
+        ) : (
           <label key={f.key} className={f.type === 'textarea' ? 'sm:col-span-2 lg:col-span-3' : ''}>
             <span className="label">{L(f)}{f.required && ' *'}</span>
             {f.type === 'bool' ? (

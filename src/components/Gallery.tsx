@@ -2,9 +2,12 @@
 import { useState } from 'react';
 import { mediaUrl, type Media } from '@/lib/media';
 import { Film } from './icons';
+import { AwaitingPhoto } from './AwaitingPhoto';
 export function Gallery({ media, name, demoLabel, videoLabel }: { media: Media[]; name: string; demoLabel: string; videoLabel: string }) {
-  const list = media.length ? media : [{ media_type: 'image', storage_path: 'placeholder:sheep', external_url: null, is_placeholder: true } as Media];
+  const real = media.filter((m) => !m.is_placeholder);
   const [i, setI] = useState(0);
+  if (real.length === 0) return <div className="aspect-[4/3] overflow-hidden rounded-3xl border border-sand-200"><AwaitingPhoto label={demoLabel} /></div>;
+  const list = real;
   const cur = list[Math.min(i, list.length - 1)];
   return (
     <div>
@@ -13,7 +16,6 @@ export function Gallery({ media, name, demoLabel, videoLabel }: { media: Media[]
           ? <video src={mediaUrl(cur)} controls playsInline preload="metadata" className="h-full w-full bg-black object-contain" />
           // eslint-disable-next-line @next/next/no-img-element
           : <img src={mediaUrl(cur)} alt={name} className="h-full w-full object-cover" />}
-        {cur.is_placeholder && <span className="absolute start-3 top-3 rounded-full bg-ink/75 px-3 py-1 text-xs font-medium text-white">{demoLabel}</span>}
       </div>
       {list.length > 1 && (
         <div className="mt-3 flex gap-2 overflow-x-auto">

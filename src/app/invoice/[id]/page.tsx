@@ -22,6 +22,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
       <div className="no-print mb-4 flex justify-end"><PrintButton /></div>
       <header className="flex items-start justify-between gap-6 border-b border-sand-200 pb-4">
         <div>
+          <div className="mb-3 flex items-center gap-3">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/brand/logo-160.png" alt="" className="h-14 w-14" /><div><div className="text-lg font-bold text-[#073F2E]">{seller.name_ar}</div><div className="text-xs tracking-widest text-[#A9822F]">{seller.name_en}</div></div></div>
           <h1 className="text-xl font-bold">{title[0]} <span className="text-base font-normal text-ink/60">/ {title[1]}</span></h1>
           <div className="mt-1">رقم الفاتورة / No.: <b dir="ltr">{inv.invoice_number}</b></div>
           <div>التاريخ / Date: {dateFmt(inv.issued_at, 'ar', true)}</div>

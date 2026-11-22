@@ -13,10 +13,10 @@ export async function Footer() {
   const [{ locale, t }, s] = await Promise.all([getT(), getSettings()]);
   const name = locale === 'ar' ? s.store_name_ar : s.store_name_en;
   return (
-    <footer className="mt-20 border-t border-sand-200 bg-ink text-sand-100">
+    <footer className="mt-20 border-t-4 border-gold bg-brand-dark text-sand-100">
       <div className="mx-auto grid max-w-page gap-10 px-4 py-12 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="text-lg font-bold text-white">{name}</div>
+          <div className="flex items-center gap-3">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={s.logo_url || '/brand/logo-160.png'} alt={name} className="h-12 w-12 rounded-xl bg-sand-50 p-0.5" /><div><div className="text-lg font-bold text-white">{name}</div><div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">{locale === 'ar' ? s.store_name_en : s.store_name_ar}</div></div></div>
           <p className="mt-2 max-w-md text-sm leading-7 text-sand-200/80">{t.footer_tag}</p>
           <div className="mt-4 flex items-center gap-2">
             <a href={waLink(s.whatsapp_number)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="footer-social"><WhatsAppIcon /></a>
@@ -31,6 +31,7 @@ export async function Footer() {
             <li><Link href="/terms" className="hover:text-white">{t.terms}</Link></li>
             <li><Link href="/shipping" className="hover:text-white">{t.shipping}</Link></li>
             <li><Link href="/returns" className="hover:text-white">{t.returns}</Link></li>
+            <li><Link href="/contact#support" className="hover:text-white">{t.support_title}</Link></li>
           </ul>
         </div>
         <div>

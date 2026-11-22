@@ -3,6 +3,6 @@ export type Media = { id?: string; media_type: 'image' | 'video'; storage_path: 
 export function mediaUrl(m: Pick<Media, 'storage_path' | 'external_url'>) {
   if (m.external_url) return m.external_url;
   const p = m.storage_path || '';
-  if (p.startsWith('placeholder:')) return `/placeholders/${p.slice(12)}.svg`;
+  if (p.startsWith('placeholder:')) return '/brand/logo.png';
   return `${SUPABASE_URL}/storage/v1/object/public/product-media/${p.split('/').map(encodeURIComponent).join('/')}`;
 }

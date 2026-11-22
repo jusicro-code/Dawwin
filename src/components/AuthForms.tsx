@@ -18,7 +18,15 @@ function authErr(msg: string, ar: boolean) {
   return msg;
 }
 function Shell({ title, children }: { title: string; children: React.ReactNode }) {
-  return <div className="mx-auto max-w-md px-4 py-14"><div className="card space-y-4 p-6"><h1 className="text-2xl font-bold">{title}</h1>{children}</div></div>;
+  return (
+    <div className="mx-auto max-w-md px-4 py-14">
+      <div className="card space-y-4 p-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/logo-160.png" alt="" className="mx-auto h-20 w-20 rounded-2xl bg-sand-50 ring-1 ring-gold/40" />
+        <h1 className="text-center text-2xl font-bold text-brand">{title}</h1>{children}
+      </div>
+    </div>
+  );
 }
 function GoogleButton({ next }: { next: string }) {
   const { t } = useT();
