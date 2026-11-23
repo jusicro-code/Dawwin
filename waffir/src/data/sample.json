@@ -1,0 +1,1030 @@
+{
+ "stores": [
+  {
+   "id": "q",
+   "name": "كيو",
+   "color": "#7C3AED"
+  },
+  {
+   "id": "danube",
+   "name": "الدانوب",
+   "color": "#0EA5E9"
+  },
+  {
+   "id": "panda",
+   "name": "بنده",
+   "color": "#16A34A"
+  },
+  {
+   "id": "othaim",
+   "name": "العثيم",
+   "color": "#DC2626"
+  },
+  {
+   "id": "tamimi",
+   "name": "التميمي",
+   "color": "#EA580C"
+  }
+ ],
+ "categories": [
+  {
+   "id": "dairy",
+   "name": "ألبان وأجبان",
+   "emoji": "🥛"
+  },
+  {
+   "id": "bakery",
+   "name": "مخبوزات",
+   "emoji": "🍞"
+  },
+  {
+   "id": "drinks",
+   "name": "مشروبات",
+   "emoji": "🧃"
+  },
+  {
+   "id": "rice",
+   "name": "أرز وبقوليات",
+   "emoji": "🍚"
+  },
+  {
+   "id": "oil",
+   "name": "زيوت وسكر",
+   "emoji": "🫒"
+  },
+  {
+   "id": "produce",
+   "name": "خضار وفواكه",
+   "emoji": "🍅"
+  },
+  {
+   "id": "meat",
+   "name": "دواجن ولحوم",
+   "emoji": "🍗"
+  },
+  {
+   "id": "snacks",
+   "name": "سناكس",
+   "emoji": "🍫"
+  },
+  {
+   "id": "clean",
+   "name": "منظفات",
+   "emoji": "🧴"
+  }
+ ],
+ "products": [
+  {
+   "id": "p1",
+   "category_id": "dairy",
+   "name": "حليب طازج كامل الدسم",
+   "size": "1 لتر",
+   "emoji": "🥛"
+  },
+  {
+   "id": "p2",
+   "category_id": "dairy",
+   "name": "لبن زبادي",
+   "size": "1 كجم",
+   "emoji": "🥣"
+  },
+  {
+   "id": "p3",
+   "category_id": "dairy",
+   "name": "جبنة شيدر شرائح",
+   "size": "200 جم",
+   "emoji": "🧀"
+  },
+  {
+   "id": "p4",
+   "category_id": "dairy",
+   "name": "بيض طازج",
+   "size": "30 حبة",
+   "emoji": "🥚"
+  },
+  {
+   "id": "p5",
+   "category_id": "bakery",
+   "name": "خبز أبيض شرائح",
+   "size": "600 جم",
+   "emoji": "🍞"
+  },
+  {
+   "id": "p6",
+   "category_id": "bakery",
+   "name": "خبز عربي",
+   "size": "6 حبات",
+   "emoji": "🫓"
+  },
+  {
+   "id": "p7",
+   "category_id": "bakery",
+   "name": "كرواسون بالزبدة",
+   "size": "6 حبات",
+   "emoji": "🥐"
+  },
+  {
+   "id": "p8",
+   "category_id": "drinks",
+   "name": "مياه شرب",
+   "size": "12 × 600 مل",
+   "emoji": "💧"
+  },
+  {
+   "id": "p9",
+   "category_id": "drinks",
+   "name": "عصير برتقال طبيعي",
+   "size": "1.75 لتر",
+   "emoji": "🧃"
+  },
+  {
+   "id": "p10",
+   "category_id": "drinks",
+   "name": "قهوة عربية",
+   "size": "500 جم",
+   "emoji": "☕"
+  },
+  {
+   "id": "p11",
+   "category_id": "drinks",
+   "name": "شاي أسود",
+   "size": "100 كيس",
+   "emoji": "🍵"
+  },
+  {
+   "id": "p12",
+   "category_id": "rice",
+   "name": "أرز بسمتي",
+   "size": "5 كجم",
+   "emoji": "🍚"
+  },
+  {
+   "id": "p13",
+   "category_id": "rice",
+   "name": "عدس أحمر",
+   "size": "1 كجم",
+   "emoji": "🫘"
+  },
+  {
+   "id": "p14",
+   "category_id": "rice",
+   "name": "معكرونة",
+   "size": "500 جم",
+   "emoji": "🍝"
+  },
+  {
+   "id": "p15",
+   "category_id": "oil",
+   "name": "زيت دوار الشمس",
+   "size": "1.8 لتر",
+   "emoji": "🌻"
+  },
+  {
+   "id": "p16",
+   "category_id": "oil",
+   "name": "زيت زيتون بكر ممتاز",
+   "size": "1 لتر",
+   "emoji": "🫒"
+  },
+  {
+   "id": "p17",
+   "category_id": "oil",
+   "name": "سكر أبيض",
+   "size": "2 كجم",
+   "emoji": "🍬"
+  },
+  {
+   "id": "p18",
+   "category_id": "produce",
+   "name": "طماطم",
+   "size": "1 كجم",
+   "emoji": "🍅"
+  },
+  {
+   "id": "p19",
+   "category_id": "produce",
+   "name": "موز",
+   "size": "1 كجم",
+   "emoji": "🍌"
+  },
+  {
+   "id": "p20",
+   "category_id": "produce",
+   "name": "بطاطس",
+   "size": "2 كجم",
+   "emoji": "🥔"
+  },
+  {
+   "id": "p21",
+   "category_id": "meat",
+   "name": "دجاج كامل مبرد",
+   "size": "1 كجم",
+   "emoji": "🍗"
+  },
+  {
+   "id": "p22",
+   "category_id": "meat",
+   "name": "صدور دجاج",
+   "size": "1 كجم",
+   "emoji": "🍖"
+  },
+  {
+   "id": "p23",
+   "category_id": "snacks",
+   "name": "شيبس بطاطس",
+   "size": "170 جم",
+   "emoji": "🥔"
+  },
+  {
+   "id": "p24",
+   "category_id": "snacks",
+   "name": "شوكولاتة بالحليب",
+   "size": "4 × 45 جم",
+   "emoji": "🍫"
+  },
+  {
+   "id": "p25",
+   "category_id": "clean",
+   "name": "مسحوق غسيل",
+   "size": "3 كجم",
+   "emoji": "🧺"
+  },
+  {
+   "id": "p26",
+   "category_id": "clean",
+   "name": "سائل جلي",
+   "size": "1 لتر",
+   "emoji": "🧴"
+  },
+  {
+   "id": "p27",
+   "category_id": "clean",
+   "name": "مناديل",
+   "size": "5 × 200",
+   "emoji": "🧻"
+  }
+ ],
+ "prices": [
+  {
+   "product_id": "p1",
+   "store_id": "q",
+   "price": 5.35,
+   "old_price": 6.7
+  },
+  {
+   "product_id": "p1",
+   "store_id": "danube",
+   "price": 6.85,
+   "old_price": null
+  },
+  {
+   "product_id": "p1",
+   "store_id": "panda",
+   "price": 6.8,
+   "old_price": null
+  },
+  {
+   "product_id": "p1",
+   "store_id": "othaim",
+   "price": 6.1,
+   "old_price": null
+  },
+  {
+   "product_id": "p1",
+   "store_id": "tamimi",
+   "price": 6.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p2",
+   "store_id": "q",
+   "price": 9.15,
+   "old_price": null
+  },
+  {
+   "product_id": "p2",
+   "store_id": "danube",
+   "price": 9.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p2",
+   "store_id": "othaim",
+   "price": 7.25,
+   "old_price": 9.05
+  },
+  {
+   "product_id": "p2",
+   "store_id": "tamimi",
+   "price": 10.05,
+   "old_price": null
+  },
+  {
+   "product_id": "p3",
+   "store_id": "q",
+   "price": 11.8,
+   "old_price": null
+  },
+  {
+   "product_id": "p3",
+   "store_id": "danube",
+   "price": 11.65,
+   "old_price": null
+  },
+  {
+   "product_id": "p3",
+   "store_id": "panda",
+   "price": 10.95,
+   "old_price": null
+  },
+  {
+   "product_id": "p3",
+   "store_id": "othaim",
+   "price": 10.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p3",
+   "store_id": "tamimi",
+   "price": 9.7,
+   "old_price": 12.15
+  },
+  {
+   "product_id": "p4",
+   "store_id": "q",
+   "price": 21.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p4",
+   "store_id": "danube",
+   "price": 22.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p4",
+   "store_id": "panda",
+   "price": 22.55,
+   "old_price": null
+  },
+  {
+   "product_id": "p4",
+   "store_id": "othaim",
+   "price": 20.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p4",
+   "store_id": "tamimi",
+   "price": 22.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p5",
+   "store_id": "q",
+   "price": 5.2,
+   "old_price": null
+  },
+  {
+   "product_id": "p5",
+   "store_id": "danube",
+   "price": 5.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p5",
+   "store_id": "panda",
+   "price": 5.2,
+   "old_price": null
+  },
+  {
+   "product_id": "p5",
+   "store_id": "othaim",
+   "price": 4.7,
+   "old_price": null
+  },
+  {
+   "product_id": "p5",
+   "store_id": "tamimi",
+   "price": 5.1,
+   "old_price": null
+  },
+  {
+   "product_id": "p6",
+   "store_id": "q",
+   "price": 2.7,
+   "old_price": null
+  },
+  {
+   "product_id": "p6",
+   "store_id": "danube",
+   "price": 2.8,
+   "old_price": null
+  },
+  {
+   "product_id": "p6",
+   "store_id": "panda",
+   "price": 2,
+   "old_price": 2.5
+  },
+  {
+   "product_id": "p6",
+   "store_id": "othaim",
+   "price": 2.4,
+   "old_price": null
+  },
+  {
+   "product_id": "p6",
+   "store_id": "tamimi",
+   "price": 2.75,
+   "old_price": null
+  },
+  {
+   "product_id": "p7",
+   "store_id": "q",
+   "price": 8.65,
+   "old_price": 10.8
+  },
+  {
+   "product_id": "p7",
+   "store_id": "danube",
+   "price": 10.65,
+   "old_price": null
+  },
+  {
+   "product_id": "p7",
+   "store_id": "panda",
+   "price": 10.55,
+   "old_price": null
+  },
+  {
+   "product_id": "p7",
+   "store_id": "othaim",
+   "price": 9.75,
+   "old_price": null
+  },
+  {
+   "product_id": "p7",
+   "store_id": "tamimi",
+   "price": 11.2,
+   "old_price": null
+  },
+  {
+   "product_id": "p8",
+   "store_id": "q",
+   "price": 9.05,
+   "old_price": null
+  },
+  {
+   "product_id": "p8",
+   "store_id": "danube",
+   "price": 10.35,
+   "old_price": null
+  },
+  {
+   "product_id": "p8",
+   "store_id": "panda",
+   "price": 9.05,
+   "old_price": null
+  },
+  {
+   "product_id": "p8",
+   "store_id": "othaim",
+   "price": 6.9,
+   "old_price": 8.6
+  },
+  {
+   "product_id": "p9",
+   "store_id": "q",
+   "price": 10.95,
+   "old_price": null
+  },
+  {
+   "product_id": "p9",
+   "store_id": "danube",
+   "price": 8.7,
+   "old_price": 10.85
+  },
+  {
+   "product_id": "p9",
+   "store_id": "panda",
+   "price": 8.1,
+   "old_price": 10.15
+  },
+  {
+   "product_id": "p9",
+   "store_id": "othaim",
+   "price": 9.55,
+   "old_price": null
+  },
+  {
+   "product_id": "p9",
+   "store_id": "tamimi",
+   "price": 10.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p10",
+   "store_id": "danube",
+   "price": 37.95,
+   "old_price": null
+  },
+  {
+   "product_id": "p10",
+   "store_id": "panda",
+   "price": 37.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p10",
+   "store_id": "tamimi",
+   "price": 40.75,
+   "old_price": null
+  },
+  {
+   "product_id": "p11",
+   "store_id": "q",
+   "price": 18.95,
+   "old_price": null
+  },
+  {
+   "product_id": "p11",
+   "store_id": "danube",
+   "price": 17.95,
+   "old_price": null
+  },
+  {
+   "product_id": "p11",
+   "store_id": "panda",
+   "price": 14.6,
+   "old_price": 18.25
+  },
+  {
+   "product_id": "p11",
+   "store_id": "tamimi",
+   "price": 14.7,
+   "old_price": 18.4
+  },
+  {
+   "product_id": "p12",
+   "store_id": "q",
+   "price": 52.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p12",
+   "store_id": "danube",
+   "price": 58.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p12",
+   "store_id": "panda",
+   "price": 48.75,
+   "old_price": null
+  },
+  {
+   "product_id": "p12",
+   "store_id": "othaim",
+   "price": 50.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p12",
+   "store_id": "tamimi",
+   "price": 55.85,
+   "old_price": null
+  },
+  {
+   "product_id": "p13",
+   "store_id": "q",
+   "price": 8.55,
+   "old_price": null
+  },
+  {
+   "product_id": "p13",
+   "store_id": "danube",
+   "price": 9.35,
+   "old_price": null
+  },
+  {
+   "product_id": "p13",
+   "store_id": "panda",
+   "price": 9,
+   "old_price": null
+  },
+  {
+   "product_id": "p13",
+   "store_id": "othaim",
+   "price": 6.55,
+   "old_price": 8.2
+  },
+  {
+   "product_id": "p13",
+   "store_id": "tamimi",
+   "price": 9.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p14",
+   "store_id": "q",
+   "price": 4.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p14",
+   "store_id": "danube",
+   "price": 4.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p14",
+   "store_id": "panda",
+   "price": 3.95,
+   "old_price": null
+  },
+  {
+   "product_id": "p14",
+   "store_id": "othaim",
+   "price": 4.4,
+   "old_price": null
+  },
+  {
+   "product_id": "p14",
+   "store_id": "tamimi",
+   "price": 4.7,
+   "old_price": null
+  },
+  {
+   "product_id": "p15",
+   "store_id": "q",
+   "price": 22.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p15",
+   "store_id": "panda",
+   "price": 17.4,
+   "old_price": 21.75
+  },
+  {
+   "product_id": "p15",
+   "store_id": "othaim",
+   "price": 20.35,
+   "old_price": null
+  },
+  {
+   "product_id": "p15",
+   "store_id": "tamimi",
+   "price": 24.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p16",
+   "store_id": "q",
+   "price": 43.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p16",
+   "store_id": "danube",
+   "price": 42.5,
+   "old_price": null
+  },
+  {
+   "product_id": "p16",
+   "store_id": "panda",
+   "price": 43.85,
+   "old_price": null
+  },
+  {
+   "product_id": "p16",
+   "store_id": "othaim",
+   "price": 38.8,
+   "old_price": null
+  },
+  {
+   "product_id": "p16",
+   "store_id": "tamimi",
+   "price": 44.75,
+   "old_price": null
+  },
+  {
+   "product_id": "p17",
+   "store_id": "q",
+   "price": 7.25,
+   "old_price": 9.05
+  },
+  {
+   "product_id": "p17",
+   "store_id": "danube",
+   "price": 10,
+   "old_price": null
+  },
+  {
+   "product_id": "p17",
+   "store_id": "panda",
+   "price": 8.9,
+   "old_price": null
+  },
+  {
+   "product_id": "p17",
+   "store_id": "othaim",
+   "price": 7.25,
+   "old_price": 9.05
+  },
+  {
+   "product_id": "p17",
+   "store_id": "tamimi",
+   "price": 10.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p18",
+   "store_id": "danube",
+   "price": 4.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p18",
+   "store_id": "panda",
+   "price": 4.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p18",
+   "store_id": "othaim",
+   "price": 4.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p18",
+   "store_id": "tamimi",
+   "price": 4.8,
+   "old_price": null
+  },
+  {
+   "product_id": "p19",
+   "store_id": "q",
+   "price": 5.6,
+   "old_price": 7
+  },
+  {
+   "product_id": "p19",
+   "store_id": "danube",
+   "price": 7,
+   "old_price": null
+  },
+  {
+   "product_id": "p19",
+   "store_id": "panda",
+   "price": 7.35,
+   "old_price": null
+  },
+  {
+   "product_id": "p19",
+   "store_id": "othaim",
+   "price": 6.55,
+   "old_price": null
+  },
+  {
+   "product_id": "p19",
+   "store_id": "tamimi",
+   "price": 7.65,
+   "old_price": null
+  },
+  {
+   "product_id": "p20",
+   "store_id": "q",
+   "price": 7.4,
+   "old_price": null
+  },
+  {
+   "product_id": "p20",
+   "store_id": "danube",
+   "price": 8.2,
+   "old_price": null
+  },
+  {
+   "product_id": "p20",
+   "store_id": "panda",
+   "price": 7.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p20",
+   "store_id": "othaim",
+   "price": 5.9,
+   "old_price": 7.35
+  },
+  {
+   "product_id": "p20",
+   "store_id": "tamimi",
+   "price": 8.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p21",
+   "store_id": "q",
+   "price": 20.45,
+   "old_price": null
+  },
+  {
+   "product_id": "p21",
+   "store_id": "danube",
+   "price": 15.9,
+   "old_price": 19.9
+  },
+  {
+   "product_id": "p21",
+   "store_id": "panda",
+   "price": 20.9,
+   "old_price": null
+  },
+  {
+   "product_id": "p21",
+   "store_id": "othaim",
+   "price": 19.2,
+   "old_price": null
+  },
+  {
+   "product_id": "p21",
+   "store_id": "tamimi",
+   "price": 20.3,
+   "old_price": null
+  },
+  {
+   "product_id": "p22",
+   "store_id": "q",
+   "price": 29.05,
+   "old_price": null
+  },
+  {
+   "product_id": "p22",
+   "store_id": "panda",
+   "price": 28.6,
+   "old_price": null
+  },
+  {
+   "product_id": "p22",
+   "store_id": "othaim",
+   "price": 29.05,
+   "old_price": null
+  },
+  {
+   "product_id": "p23",
+   "store_id": "q",
+   "price": 7.3,
+   "old_price": null
+  },
+  {
+   "product_id": "p23",
+   "store_id": "danube",
+   "price": 7.65,
+   "old_price": null
+  },
+  {
+   "product_id": "p23",
+   "store_id": "panda",
+   "price": 7.15,
+   "old_price": null
+  },
+  {
+   "product_id": "p23",
+   "store_id": "othaim",
+   "price": 5.8,
+   "old_price": 7.25
+  },
+  {
+   "product_id": "p24",
+   "store_id": "q",
+   "price": 9.7,
+   "old_price": 12.15
+  },
+  {
+   "product_id": "p24",
+   "store_id": "danube",
+   "price": 9.6,
+   "old_price": 12
+  },
+  {
+   "product_id": "p24",
+   "store_id": "panda",
+   "price": 11.75,
+   "old_price": null
+  },
+  {
+   "product_id": "p24",
+   "store_id": "othaim",
+   "price": 12.25,
+   "old_price": null
+  },
+  {
+   "product_id": "p25",
+   "store_id": "q",
+   "price": 38.1,
+   "old_price": null
+  },
+  {
+   "product_id": "p25",
+   "store_id": "danube",
+   "price": 37.4,
+   "old_price": null
+  },
+  {
+   "product_id": "p25",
+   "store_id": "othaim",
+   "price": 27.55,
+   "old_price": 34.45
+  },
+  {
+   "product_id": "p25",
+   "store_id": "tamimi",
+   "price": 37.05,
+   "old_price": null
+  },
+  {
+   "product_id": "p26",
+   "store_id": "q",
+   "price": 7.65,
+   "old_price": 9.55
+  },
+  {
+   "product_id": "p26",
+   "store_id": "danube",
+   "price": 8.1,
+   "old_price": 10.1
+  },
+  {
+   "product_id": "p26",
+   "store_id": "panda",
+   "price": 8.65,
+   "old_price": null
+  },
+  {
+   "product_id": "p26",
+   "store_id": "tamimi",
+   "price": 10,
+   "old_price": null
+  },
+  {
+   "product_id": "p27",
+   "store_id": "q",
+   "price": 12.55,
+   "old_price": 15.7
+  },
+  {
+   "product_id": "p27",
+   "store_id": "danube",
+   "price": 11.55,
+   "old_price": 14.45
+  },
+  {
+   "product_id": "p27",
+   "store_id": "panda",
+   "price": 11.2,
+   "old_price": 14
+  },
+  {
+   "product_id": "p27",
+   "store_id": "othaim",
+   "price": 13.3,
+   "old_price": null
+  },
+  {
+   "product_id": "p27",
+   "store_id": "tamimi",
+   "price": 16.35,
+   "old_price": null
+  }
+ ],
+ "ads": [
+  {
+   "id": "a1",
+   "title": "قارن قبل لا تشتري",
+   "subtitle": "وفّر على سلّتك كل أسبوع",
+   "bg_color": "#065F46",
+   "emoji": "🛒",
+   "link_url": null,
+   "sort": 1
+  },
+  {
+   "id": "a2",
+   "title": "مساحة إعلانية",
+   "subtitle": "أعلن عن متجرك هنا",
+   "bg_color": "#7C2D12",
+   "emoji": "📣",
+   "link_url": null,
+   "sort": 2
+  },
+  {
+   "id": "a3",
+   "title": "عروض نهاية الأسبوع",
+   "subtitle": "تابع أقوى التخفيضات",
+   "bg_color": "#1E3A8A",
+   "emoji": "🔥",
+   "link_url": null,
+   "sort": 3
+  }
+ ]
+}
